@@ -1,3 +1,5 @@
+##Used code from haiku
+
 import json
 import csv
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -29,22 +31,29 @@ class RequestHandler(BaseHTTPRequestHandler):
         students = []
         with open('FDTables.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')
+            ##iterate through csv file
             for row in csv_reader:
                 linenumber += 1
+                ##If student is waiter
                 if 'W' in row[1]:
                     student = {
+                        ##Create dictionary with student name, table, waiter status
                     'name' : row[0].replace('|', ''),
                     'table' : row[1].replace('|','').replace('W', ''),
                     "waiter" : "Yes"
                     }
+                    ##Create dictionary with student name, table, waiter status
                 else:
                     student = {
                     'name' : row[0].replace('|', ''),
                     'table' : row[1].replace('|','').replace('W', ''),
                     'waiter' : 'No'
                     }
+                    ##append student to list of students
                 students.append(student)
+                ##create dictionary containing each student
         seating = {"students" : students}
+        ##create json reply
         json_reply = json.dumps(seating)
         self.wfile.write(json_reply.encode(encoding='utf_8'))
 
@@ -55,14 +64,3 @@ port = 80
 print('Listening on localhost:%s' % port)
 server = HTTPServer(('', port), RequestHandler)
 server.serve_forever()
-
-
-
-
-
-                ##table.append(row[0].replace('|', ''))
-                ##if linenumber % 8 == 0 or (row[1].replace('|', '') == 'kitchen' and (linenumber - 7) % 8 == 0):
-                    ##json_reply = json.dumps({'table': row[1].replace('|', '').replace('W', ''), 'students': table})
-                ##    table = []
-                ##    self.wfile.write(json_reply.encode(encoding='utf_8'))
-                ##linenumber += 1
