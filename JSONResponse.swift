@@ -16,7 +16,7 @@ enum StudentError: Error{
 struct Request {
     let reqURL:URL
     init() {
-        let reqString = "http://localhost"
+        let reqString = "ec2-54-177-254-56.us-west-1.compute.amazonaws.com"
         guard let reqURL = URL(string: reqString) else {fatalError()}
         self.reqURL = reqURL
         
